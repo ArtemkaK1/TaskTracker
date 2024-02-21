@@ -1,0 +1,47 @@
+@startuml
+
+skinparam linetype ortho
+
+entity "User" {
+  + ID: number <<generated>>
+  --
+  Name: text
+  Email address: text
+  Password: text
+}
+
+entity "Task" {
+  + ID: number <<generated>>
+  --
+  Creator_ID: number <<FK>>
+  Title: text
+  Description: text
+  Creation date: date
+  Status: text
+}
+
+entity "Comment" {
+  + ID: number <<generated>>
+  --
+  Author_ID: number <<FK>>
+  Task_ID: number: <<FK>>
+  Content: text
+  Creation date: date
+}
+
+entity "Like" {
+  + ID: number <<generated>>
+  --
+  Author_ID: number <<FK>>
+  Task_ID: number <<FK>>
+  Date: date
+}
+
+User ||--o{ Task
+User ||--o{ Comment
+Task ||--o{ Comment
+User ||--o{ Like
+Task ||--o{ Like
+
+@enduml
+
