@@ -1,0 +1,31 @@
+
+@startuml
+'https://plantuml.com/sequence-diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Архитектура трекера задач
+
+Person(user, "User", "A user of task tracker")
+
+Container(iosApp, "iOS App", "Frontend iOS application on Swift", "iOS")
+Container(mainService, "Main Service", "Main service responsible for client API, user registration and authentication", "Python")
+Container(statisticsService, "Statistics Service", "Service for counting likes and views", "Python")
+Container(tasksService, "Tasks Service", "Service for managing tasks and comments", "Python")
+ContainerDb(clickhouse, "ClickHouse", "Database for statistics service", "ClickHouse")
+ContainerDb(mongoDbTasks, "MongoDB", "Database for tasks and comments", "MongoDB")
+ContainerDb(mongoDbUsers, "MongoDB", "Database for user authorization", "MongoDB")
+
+
+Rel(user, iosApp, "Uses")
+Rel(iosApp, mainService, "Requests", "REST")
+Rel_Up(mainService, iosApp, "Provides client API", "REST API")
+Rel(mainService, statisticsService, "gRPC")
+Rel_R(mainService, mongoDbUsers, "Uses")
+Rel(mainService, tasksService, "gRPC")
+Rel(statisticsService, clickhouse, "Uses")
+Rel(tasksService, mongoDbTasks, "Uses")
+
+
+@enduml

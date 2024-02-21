@@ -1,0 +1,9 @@
+@startuml
+'https://plantuml.com/sequence-diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+Person(user, "Пользователь", "Пользователь трекера")
+
+System(tracker, "Трекер задач")
+
+Rel(user, tracker, "Создает, обновляет, удаляет и работает с задачами")
+@enduml
