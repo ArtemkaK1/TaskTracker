@@ -3,38 +3,39 @@
 skinparam linetype ortho
 
 entity "User" {
-  + ID: number <<generated>>
+  * ID: number <<generated>>
   --
   Name: text
-  Email address: text
-  Password: text
+  * Email address: text
+  * Password: text
 }
 
 entity "Task" {
-  + ID: number <<generated>>
+  * ID: number <<generated>>
   --
-  Creator_ID: number <<FK>>
-  Title: text
+  * Creator_ID: number <<FK>>
+  * Title: text
   Description: text
-  Creation date: date
-  Status: text
+  * Creation date: date
+  * Status: text
 }
 
 entity "Comment" {
-  + ID: number <<generated>>
+  * ID: number <<generated>>
   --
-  Author_ID: number <<FK>>
-  Task_ID: number: <<FK>>
-  Content: text
-  Creation date: date
+  * Author_ID: number <<FK>>
+  * Task_ID: number: <<FK>>
+  Comment_ID: number
+  * Content: text
+  * Creation date: date
 }
 
 entity "Like" {
-  + ID: number <<generated>>
+  * ID: number <<generated>>
   --
-  Author_ID: number <<FK>>
-  Task_ID: number <<FK>>
-  Date: date
+  * Author_ID: number <<FK>>
+  * Task_ID: number <<FK>>
+  * Date: date
 }
 
 User ||--o{ Task
