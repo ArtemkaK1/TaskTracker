@@ -14,18 +14,18 @@ Container(mainService, "Main Service", "Main service responsible for client API,
 Container(statisticsService, "Statistics Service", "Service for counting likes and views", "Python")
 Container(tasksService, "Tasks Service", "Service for managing tasks and comments", "Python")
 ContainerDb(clickhouse, "ClickHouse", "Database for statistics service", "ClickHouse")
-ContainerDb(mongoDbTasks, "MongoDB", "Database for tasks and comments", "MongoDB")
-ContainerDb(mongoDbUsers, "MongoDB", "Database for user authorization", "MongoDB")
+ContainerDb(postgresTasks, "PostgreSQL", "Database for tasks and comments", "PostgreSQL")
+ContainerDb(postgresUsers, "PostgreSQL", "Database for user authorization", "PostgreSQL")
 
 
 Rel(user, iosApp, "Uses")
 Rel(iosApp, mainService, "Requests", "REST")
 Rel_Up(mainService, iosApp, "Provides client API", "REST API")
 Rel(mainService, statisticsService, "gRPC")
-Rel_R(mainService, mongoDbUsers, "Uses")
+Rel_R(mainService, postgresUsers, "Uses")
 Rel(mainService, tasksService, "gRPC")
 Rel(statisticsService, clickhouse, "Uses")
-Rel(tasksService, mongoDbTasks, "Uses")
+Rel(tasksService, postgresTasks, "Uses")
 
 
 @enduml
