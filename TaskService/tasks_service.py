@@ -3,6 +3,7 @@ import grpc
 from sqlalchemy import create_engine, Column, Integer, String, Boolean
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+import uuid
 
 from Protos.task_service_pb2_grpc import *
 from Protos.task_service_pb2 import *
@@ -16,10 +17,10 @@ Base = declarative_base()
 class Task(Base):
     __tablename__ = "tasks_data"
 
-    id = Column(Integer, primary_key=True)
-    title = Column(String, nullable=False)
+    id = Column(String, primary_key=True)
+    title = Column(String)
     description = Column(String)
-    author_id = Column(String, nullable=False)
+    author_id = Column(String)
     completed = Column(Boolean)
 
 
@@ -33,6 +34,7 @@ class TaskService(TaskServiceServicer):
 
     def CreateTask(self, request, context):
         new_task = Task(
+            id = str(uuid.uuid4()),
             title=request.title,
             description=request.description,
             author_id=request.author_id,
@@ -41,7 +43,7 @@ class TaskService(TaskServiceServicer):
         self.session.add(new_task)
         self.session.commit()
         self.session.refresh(new_task)
-        print(new_task.title, type(new_task.author_id))
+        print(type(new_task.id))
         return new_task
 
     def UpdateTask(self, request, context):

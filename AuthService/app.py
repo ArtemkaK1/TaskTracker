@@ -121,9 +121,6 @@ def logout_user():
 def create_task():
     token = request.headers.get('Authorization')
     user = check_token(token)
-    if isinstance(user, tuple):  # Check if error response
-        return user
-
     data = request.json
     task_request = CreateTaskRequest(
         title=data['title'],
@@ -136,7 +133,7 @@ def create_task():
     return jsonify({'message': 'Task created successfully'})
 
 
-@app.route('/tasks/<int:task_id>', methods=['PUT'])
+@app.route('/tasks/<task_id>', methods=['PUT'])
 def update_task(task_id):
     token = request.headers.get('Authorization')
     user = check_token(token)
@@ -162,7 +159,7 @@ def update_task(task_id):
     return jsonify({'message': 'Task updated successfully', 'task': response.__dict__})
 
 
-@app.route('/tasks/<int:task_id>', methods=['DELETE'])
+@app.route('/tasks/<task_id>', methods=['DELETE'])
 def delete_task(task_id):
     token = request.headers.get('Authorization')
     user = check_token(token)
@@ -179,7 +176,7 @@ def delete_task(task_id):
     return jsonify({'message': 'Task deleted successfully'})
 
 
-@app.route('/tasks/<int:task_id>', methods=['GET'])  # Use int:task_id for int32
+@app.route('/tasks/<task_id>', methods=['GET'])  # Use int:task_id for int32
 def get_task(task_id):
     token = request.headers.get('Authorization')
     user = check_token(token)
