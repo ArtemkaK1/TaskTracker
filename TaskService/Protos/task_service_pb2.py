@@ -19,7 +19,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x12task_service.proto\x12\x05tasks\"\xb2\x01\n\x04Task\x12\x0f\n\x02id\x18\x01 \x01(\tH\x00\x88\x01\x01\x12\x12\n\x05title\x18\x02 \x01(\tH\x01\x88\x01\x01\x12\x18\n\x0b\x64\x65scription\x18\x03 \x01(\tH\x02\x88\x01\x01\x12\x16\n\tauthor_id\x18\x04 \x01(\tH\x03\x88\x01\x01\x12\x16\n\tcompleted\x18\x05 \x01(\x08H\x04\x88\x01\x01\x42\x05\n\x03_idB\x08\n\x06_titleB\x0e\n\x0c_descriptionB\x0c\n\n_author_idB\x0c\n\n_completed\"J\n\x11\x43reateTaskRequest\x12\r\n\x05title\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x11\n\tauthor_id\x18\x03 \x01(\t\".\n\x11UpdateTaskRequest\x12\x19\n\x04task\x18\x01 \x01(\x0b\x32\x0b.tasks.Task\"\x1f\n\x11\x44\x65leteTaskRequest\x12\n\n\x02id\x18\x01 \x01(\t\"\x1c\n\x0eGetTaskRequest\x12\n\n\x02id\x18\x01 \x01(\t\"2\n\x10ListTasksRequest\x12\x0c\n\x04page\x18\x01 \x01(\x05\x12\x10\n\x08per_page\x18\x02 \x01(\x05\"/\n\x11ListTasksResponse\x12\x1a\n\x05tasks\x18\x01 \x03(\x0b\x32\x0b.tasks.Task\"\x07\n\x05\x45mpty2\x9c\x02\n\x0bTaskService\x12\x33\n\nCreateTask\x12\x18.tasks.CreateTaskRequest\x1a\x0b.tasks.Task\x12\x33\n\nUpdateTask\x12\x18.tasks.UpdateTaskRequest\x1a\x0b.tasks.Task\x12\x34\n\nDeleteTask\x12\x18.tasks.DeleteTaskRequest\x1a\x0c.tasks.Empty\x12-\n\x07GetTask\x12\x15.tasks.GetTaskRequest\x1a\x0b.tasks.Task\x12>\n\tListTasks\x12\x17.tasks.ListTasksRequest\x1a\x18.tasks.ListTasksResponseb\x06proto3'
+  serialized_pb=b'\n\x12task_service.proto\x12\x05tasks\"\xa6\x01\n\x04Task\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\x05title\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x18\n\x0b\x64\x65scription\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x16\n\tauthor_id\x18\x04 \x01(\tH\x02\x88\x01\x01\x12\x16\n\tcompleted\x18\x05 \x01(\x08H\x03\x88\x01\x01\x42\x08\n\x06_titleB\x0e\n\x0c_descriptionB\x0c\n\n_author_idB\x0c\n\n_completed\"J\n\x11\x43reateTaskRequest\x12\r\n\x05title\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x11\n\tauthor_id\x18\x03 \x01(\t\".\n\x11UpdateTaskRequest\x12\x19\n\x04task\x18\x01 \x01(\x0b\x32\x0b.tasks.Task\"\x1f\n\x11\x44\x65leteTaskRequest\x12\n\n\x02id\x18\x01 \x01(\t\"\x1c\n\x0eGetTaskRequest\x12\n\n\x02id\x18\x01 \x01(\t\"2\n\x10ListTasksRequest\x12\x0c\n\x04page\x18\x01 \x01(\x05\x12\x10\n\x08per_page\x18\x02 \x01(\x05\"/\n\x11ListTasksResponse\x12\x1a\n\x05tasks\x18\x01 \x03(\x0b\x32\x0b.tasks.Task\"\x07\n\x05\x45mpty2\x9c\x02\n\x0bTaskService\x12\x33\n\nCreateTask\x12\x18.tasks.CreateTaskRequest\x1a\x0b.tasks.Task\x12\x33\n\nUpdateTask\x12\x18.tasks.UpdateTaskRequest\x1a\x0b.tasks.Task\x12\x34\n\nDeleteTask\x12\x18.tasks.DeleteTaskRequest\x1a\x0c.tasks.Empty\x12-\n\x07GetTask\x12\x15.tasks.GetTaskRequest\x1a\x0b.tasks.Task\x12>\n\tListTasks\x12\x17.tasks.ListTasksRequest\x1a\x18.tasks.ListTasksResponseb\x06proto3'
 )
 
 
@@ -80,33 +80,28 @@ _TASK = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
     _descriptor.OneofDescriptor(
-      name='_id', full_name='tasks.Task._id',
+      name='_title', full_name='tasks.Task._title',
       index=0, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
     _descriptor.OneofDescriptor(
-      name='_title', full_name='tasks.Task._title',
+      name='_description', full_name='tasks.Task._description',
       index=1, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
     _descriptor.OneofDescriptor(
-      name='_description', full_name='tasks.Task._description',
+      name='_author_id', full_name='tasks.Task._author_id',
       index=2, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
     _descriptor.OneofDescriptor(
-      name='_author_id', full_name='tasks.Task._author_id',
-      index=3, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
       name='_completed', full_name='tasks.Task._completed',
-      index=4, containing_type=None,
+      index=3, containing_type=None,
       create_key=_descriptor._internal_create_key,
     fields=[]),
   ],
   serialized_start=30,
-  serialized_end=208,
+  serialized_end=196,
 )
 
 
@@ -151,8 +146,8 @@ _CREATETASKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=210,
-  serialized_end=284,
+  serialized_start=198,
+  serialized_end=272,
 )
 
 
@@ -183,8 +178,8 @@ _UPDATETASKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=286,
-  serialized_end=332,
+  serialized_start=274,
+  serialized_end=320,
 )
 
 
@@ -215,8 +210,8 @@ _DELETETASKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=334,
-  serialized_end=365,
+  serialized_start=322,
+  serialized_end=353,
 )
 
 
@@ -247,8 +242,8 @@ _GETTASKREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=367,
-  serialized_end=395,
+  serialized_start=355,
+  serialized_end=383,
 )
 
 
@@ -286,8 +281,8 @@ _LISTTASKSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=397,
-  serialized_end=447,
+  serialized_start=385,
+  serialized_end=435,
 )
 
 
@@ -318,8 +313,8 @@ _LISTTASKSRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=449,
-  serialized_end=496,
+  serialized_start=437,
+  serialized_end=484,
 )
 
 
@@ -343,13 +338,10 @@ _EMPTY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=498,
-  serialized_end=505,
+  serialized_start=486,
+  serialized_end=493,
 )
 
-_TASK.oneofs_by_name['_id'].fields.append(
-  _TASK.fields_by_name['id'])
-_TASK.fields_by_name['id'].containing_oneof = _TASK.oneofs_by_name['_id']
 _TASK.oneofs_by_name['_title'].fields.append(
   _TASK.fields_by_name['title'])
 _TASK.fields_by_name['title'].containing_oneof = _TASK.oneofs_by_name['_title']
@@ -439,8 +431,8 @@ _TASKSERVICE = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=508,
-  serialized_end=792,
+  serialized_start=496,
+  serialized_end=780,
   methods=[
   _descriptor.MethodDescriptor(
     name='CreateTask',
