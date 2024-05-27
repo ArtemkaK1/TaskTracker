@@ -59,6 +59,8 @@ class UserData(db.Model):
 def register_user():
     data = request.json
     password_hash = generate_password_hash(data['password'])
+    if db.session.query(UserData).filter(UserData.username == data['username']).first():
+        return jsonify({'message': 'User with this username already exists'}), 400
     new_user = UserData(username=data['username'], password_hash=password_hash,
                         first_name=data.get('first_name'), last_name=data.get('last_name'),
                         birthdate=data.get('birthdate'), email=data.get('email'),
@@ -69,12 +71,13 @@ def register_user():
 
 
 # Обновление данных пользователя
-@app.route('/update/', methods=['PUT'])
+@app.route('/update', methods=['PUT'])
 def update_user():
     token = request.headers.get('Authorization')
     if not token:
         return jsonify({'message': 'Token not provided'}), 401
-    user = check_token(token)
+    user_id = check_token(token)
+    user = db.session.query(UserData).get(user_id)
     data = request.json
     user.first_name = data.get('first_name', user.first_name)
     user.last_name = data.get('last_name', user.last_name)
@@ -106,7 +109,8 @@ def login_user():
 @app.route('/logout', methods=['POST'])
 def logout_user():
     token = request.headers.get('Authorization')
-    user = check_token(token)
+    user_id = check_token(token)
+    user = db.session.query(UserData).get(user_id)
     if user:
         user.token = None
         db.session.commit()
