@@ -3,6 +3,7 @@
 # source: task_service.proto
 """Generated protocol buffer code."""
 from google.protobuf import descriptor as _descriptor
+from google.protobuf import descriptor_pool as _descriptor_pool
 from google.protobuf import message as _message
 from google.protobuf import reflection as _reflection
 from google.protobuf import symbol_database as _symbol_database
@@ -13,480 +14,94 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor.FileDescriptor(
-  name='task_service.proto',
-  package='tasks',
-  syntax='proto3',
-  serialized_options=None,
-  create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\x12task_service.proto\x12\x05tasks\"\xa6\x01\n\x04Task\x12\n\n\x02id\x18\x01 \x01(\t\x12\x12\n\x05title\x18\x02 \x01(\tH\x00\x88\x01\x01\x12\x18\n\x0b\x64\x65scription\x18\x03 \x01(\tH\x01\x88\x01\x01\x12\x16\n\tauthor_id\x18\x04 \x01(\tH\x02\x88\x01\x01\x12\x16\n\tcompleted\x18\x05 \x01(\x08H\x03\x88\x01\x01\x42\x08\n\x06_titleB\x0e\n\x0c_descriptionB\x0c\n\n_author_idB\x0c\n\n_completed\"J\n\x11\x43reateTaskRequest\x12\r\n\x05title\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x11\n\tauthor_id\x18\x03 \x01(\t\".\n\x11UpdateTaskRequest\x12\x19\n\x04task\x18\x01 \x01(\x0b\x32\x0b.tasks.Task\"\x1f\n\x11\x44\x65leteTaskRequest\x12\n\n\x02id\x18\x01 \x01(\t\"\x1c\n\x0eGetTaskRequest\x12\n\n\x02id\x18\x01 \x01(\t\"2\n\x10ListTasksRequest\x12\x0c\n\x04page\x18\x01 \x01(\x05\x12\x10\n\x08per_page\x18\x02 \x01(\x05\"/\n\x11ListTasksResponse\x12\x1a\n\x05tasks\x18\x01 \x03(\x0b\x32\x0b.tasks.Task\"\x07\n\x05\x45mpty2\x9c\x02\n\x0bTaskService\x12\x33\n\nCreateTask\x12\x18.tasks.CreateTaskRequest\x1a\x0b.tasks.Task\x12\x33\n\nUpdateTask\x12\x18.tasks.UpdateTaskRequest\x1a\x0b.tasks.Task\x12\x34\n\nDeleteTask\x12\x18.tasks.DeleteTaskRequest\x1a\x0c.tasks.Empty\x12-\n\x07GetTask\x12\x15.tasks.GetTaskRequest\x1a\x0b.tasks.Task\x12>\n\tListTasks\x12\x17.tasks.ListTasksRequest\x1a\x18.tasks.ListTasksResponseb\x06proto3'
-)
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x12task_service.proto\x12\x04task\"\\\n\x04Task\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x11\n\tauthor_id\x18\x04 \x01(\x05\x12\x11\n\tcompleted\x18\x05 \x01(\x08\"J\n\x11\x43reateTaskRequest\x12\r\n\x05title\x18\x01 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x02 \x01(\t\x12\x11\n\tauthor_id\x18\x03 \x01(\x05\"i\n\x11UpdateTaskRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\r\n\x05title\x18\x02 \x01(\t\x12\x13\n\x0b\x64\x65scription\x18\x03 \x01(\t\x12\x11\n\tauthor_id\x18\x04 \x01(\x05\x12\x11\n\tcompleted\x18\x05 \x01(\x08\"2\n\x11\x44\x65leteTaskRequest\x12\n\n\x02id\x18\x01 \x01(\x05\x12\x11\n\tauthor_id\x18\x02 \x01(\x05\"\x1c\n\x0eGetTaskRequest\x12\n\n\x02id\x18\x01 \x01(\x05\"2\n\x10ListTasksRequest\x12\x0c\n\x04page\x18\x01 \x01(\x05\x12\x10\n\x08per_page\x18\x02 \x01(\x05\"8\n\x0cTaskResponse\x12\x0e\n\x06status\x18\x01 \x01(\x05\x12\x18\n\x04task\x18\x02 \x01(\x0b\x32\n.task.Task\"S\n\x11ListTasksResponse\x12\x0e\n\x06status\x18\x01 \x01(\x05\x12\x19\n\x05tasks\x18\x02 \x03(\x0b\x32\n.task.Task\x12\x13\n\x0btotal_count\x18\x03 \x01(\x05\x32\xb1\x02\n\x0bTaskService\x12\x39\n\nCreateTask\x12\x17.task.CreateTaskRequest\x1a\x12.task.TaskResponse\x12\x39\n\nUpdateTask\x12\x17.task.UpdateTaskRequest\x1a\x12.task.TaskResponse\x12\x39\n\nDeleteTask\x12\x17.task.DeleteTaskRequest\x1a\x12.task.TaskResponse\x12\x33\n\x07GetTask\x12\x14.task.GetTaskRequest\x1a\x12.task.TaskResponse\x12<\n\tListTasks\x12\x16.task.ListTasksRequest\x1a\x17.task.ListTasksResponseb\x06proto3')
 
 
 
-
-_TASK = _descriptor.Descriptor(
-  name='Task',
-  full_name='tasks.Task',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='tasks.Task.id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='title', full_name='tasks.Task.title', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='description', full_name='tasks.Task.description', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='author_id', full_name='tasks.Task.author_id', index=3,
-      number=4, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='completed', full_name='tasks.Task.completed', index=4,
-      number=5, type=8, cpp_type=7, label=1,
-      has_default_value=False, default_value=False,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-    _descriptor.OneofDescriptor(
-      name='_title', full_name='tasks.Task._title',
-      index=0, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
-      name='_description', full_name='tasks.Task._description',
-      index=1, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
-      name='_author_id', full_name='tasks.Task._author_id',
-      index=2, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-    _descriptor.OneofDescriptor(
-      name='_completed', full_name='tasks.Task._completed',
-      index=3, containing_type=None,
-      create_key=_descriptor._internal_create_key,
-    fields=[]),
-  ],
-  serialized_start=30,
-  serialized_end=196,
-)
-
-
-_CREATETASKREQUEST = _descriptor.Descriptor(
-  name='CreateTaskRequest',
-  full_name='tasks.CreateTaskRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='title', full_name='tasks.CreateTaskRequest.title', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='description', full_name='tasks.CreateTaskRequest.description', index=1,
-      number=2, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='author_id', full_name='tasks.CreateTaskRequest.author_id', index=2,
-      number=3, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=198,
-  serialized_end=272,
-)
-
-
-_UPDATETASKREQUEST = _descriptor.Descriptor(
-  name='UpdateTaskRequest',
-  full_name='tasks.UpdateTaskRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='task', full_name='tasks.UpdateTaskRequest.task', index=0,
-      number=1, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=274,
-  serialized_end=320,
-)
-
-
-_DELETETASKREQUEST = _descriptor.Descriptor(
-  name='DeleteTaskRequest',
-  full_name='tasks.DeleteTaskRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='tasks.DeleteTaskRequest.id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=322,
-  serialized_end=353,
-)
-
-
-_GETTASKREQUEST = _descriptor.Descriptor(
-  name='GetTaskRequest',
-  full_name='tasks.GetTaskRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='id', full_name='tasks.GetTaskRequest.id', index=0,
-      number=1, type=9, cpp_type=9, label=1,
-      has_default_value=False, default_value=b"".decode('utf-8'),
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=355,
-  serialized_end=383,
-)
-
-
-_LISTTASKSREQUEST = _descriptor.Descriptor(
-  name='ListTasksRequest',
-  full_name='tasks.ListTasksRequest',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='page', full_name='tasks.ListTasksRequest.page', index=0,
-      number=1, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='per_page', full_name='tasks.ListTasksRequest.per_page', index=1,
-      number=2, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=385,
-  serialized_end=435,
-)
-
-
-_LISTTASKSRESPONSE = _descriptor.Descriptor(
-  name='ListTasksResponse',
-  full_name='tasks.ListTasksResponse',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='tasks', full_name='tasks.ListTasksResponse.tasks', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=437,
-  serialized_end=484,
-)
-
-
-_EMPTY = _descriptor.Descriptor(
-  name='Empty',
-  full_name='tasks.Empty',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=486,
-  serialized_end=493,
-)
-
-_TASK.oneofs_by_name['_title'].fields.append(
-  _TASK.fields_by_name['title'])
-_TASK.fields_by_name['title'].containing_oneof = _TASK.oneofs_by_name['_title']
-_TASK.oneofs_by_name['_description'].fields.append(
-  _TASK.fields_by_name['description'])
-_TASK.fields_by_name['description'].containing_oneof = _TASK.oneofs_by_name['_description']
-_TASK.oneofs_by_name['_author_id'].fields.append(
-  _TASK.fields_by_name['author_id'])
-_TASK.fields_by_name['author_id'].containing_oneof = _TASK.oneofs_by_name['_author_id']
-_TASK.oneofs_by_name['_completed'].fields.append(
-  _TASK.fields_by_name['completed'])
-_TASK.fields_by_name['completed'].containing_oneof = _TASK.oneofs_by_name['_completed']
-_UPDATETASKREQUEST.fields_by_name['task'].message_type = _TASK
-_LISTTASKSRESPONSE.fields_by_name['tasks'].message_type = _TASK
-DESCRIPTOR.message_types_by_name['Task'] = _TASK
-DESCRIPTOR.message_types_by_name['CreateTaskRequest'] = _CREATETASKREQUEST
-DESCRIPTOR.message_types_by_name['UpdateTaskRequest'] = _UPDATETASKREQUEST
-DESCRIPTOR.message_types_by_name['DeleteTaskRequest'] = _DELETETASKREQUEST
-DESCRIPTOR.message_types_by_name['GetTaskRequest'] = _GETTASKREQUEST
-DESCRIPTOR.message_types_by_name['ListTasksRequest'] = _LISTTASKSREQUEST
-DESCRIPTOR.message_types_by_name['ListTasksResponse'] = _LISTTASKSRESPONSE
-DESCRIPTOR.message_types_by_name['Empty'] = _EMPTY
-_sym_db.RegisterFileDescriptor(DESCRIPTOR)
-
+_TASK = DESCRIPTOR.message_types_by_name['Task']
+_CREATETASKREQUEST = DESCRIPTOR.message_types_by_name['CreateTaskRequest']
+_UPDATETASKREQUEST = DESCRIPTOR.message_types_by_name['UpdateTaskRequest']
+_DELETETASKREQUEST = DESCRIPTOR.message_types_by_name['DeleteTaskRequest']
+_GETTASKREQUEST = DESCRIPTOR.message_types_by_name['GetTaskRequest']
+_LISTTASKSREQUEST = DESCRIPTOR.message_types_by_name['ListTasksRequest']
+_TASKRESPONSE = DESCRIPTOR.message_types_by_name['TaskResponse']
+_LISTTASKSRESPONSE = DESCRIPTOR.message_types_by_name['ListTasksResponse']
 Task = _reflection.GeneratedProtocolMessageType('Task', (_message.Message,), {
   'DESCRIPTOR' : _TASK,
   '__module__' : 'task_service_pb2'
-  # @@protoc_insertion_point(class_scope:tasks.Task)
+  # @@protoc_insertion_point(class_scope:task.Task)
   })
 _sym_db.RegisterMessage(Task)
 
 CreateTaskRequest = _reflection.GeneratedProtocolMessageType('CreateTaskRequest', (_message.Message,), {
   'DESCRIPTOR' : _CREATETASKREQUEST,
   '__module__' : 'task_service_pb2'
-  # @@protoc_insertion_point(class_scope:tasks.CreateTaskRequest)
+  # @@protoc_insertion_point(class_scope:task.CreateTaskRequest)
   })
 _sym_db.RegisterMessage(CreateTaskRequest)
 
 UpdateTaskRequest = _reflection.GeneratedProtocolMessageType('UpdateTaskRequest', (_message.Message,), {
   'DESCRIPTOR' : _UPDATETASKREQUEST,
   '__module__' : 'task_service_pb2'
-  # @@protoc_insertion_point(class_scope:tasks.UpdateTaskRequest)
+  # @@protoc_insertion_point(class_scope:task.UpdateTaskRequest)
   })
 _sym_db.RegisterMessage(UpdateTaskRequest)
 
 DeleteTaskRequest = _reflection.GeneratedProtocolMessageType('DeleteTaskRequest', (_message.Message,), {
   'DESCRIPTOR' : _DELETETASKREQUEST,
   '__module__' : 'task_service_pb2'
-  # @@protoc_insertion_point(class_scope:tasks.DeleteTaskRequest)
+  # @@protoc_insertion_point(class_scope:task.DeleteTaskRequest)
   })
 _sym_db.RegisterMessage(DeleteTaskRequest)
 
 GetTaskRequest = _reflection.GeneratedProtocolMessageType('GetTaskRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETTASKREQUEST,
   '__module__' : 'task_service_pb2'
-  # @@protoc_insertion_point(class_scope:tasks.GetTaskRequest)
+  # @@protoc_insertion_point(class_scope:task.GetTaskRequest)
   })
 _sym_db.RegisterMessage(GetTaskRequest)
 
 ListTasksRequest = _reflection.GeneratedProtocolMessageType('ListTasksRequest', (_message.Message,), {
   'DESCRIPTOR' : _LISTTASKSREQUEST,
   '__module__' : 'task_service_pb2'
-  # @@protoc_insertion_point(class_scope:tasks.ListTasksRequest)
+  # @@protoc_insertion_point(class_scope:task.ListTasksRequest)
   })
 _sym_db.RegisterMessage(ListTasksRequest)
+
+TaskResponse = _reflection.GeneratedProtocolMessageType('TaskResponse', (_message.Message,), {
+  'DESCRIPTOR' : _TASKRESPONSE,
+  '__module__' : 'task_service_pb2'
+  # @@protoc_insertion_point(class_scope:task.TaskResponse)
+  })
+_sym_db.RegisterMessage(TaskResponse)
 
 ListTasksResponse = _reflection.GeneratedProtocolMessageType('ListTasksResponse', (_message.Message,), {
   'DESCRIPTOR' : _LISTTASKSRESPONSE,
   '__module__' : 'task_service_pb2'
-  # @@protoc_insertion_point(class_scope:tasks.ListTasksResponse)
+  # @@protoc_insertion_point(class_scope:task.ListTasksResponse)
   })
 _sym_db.RegisterMessage(ListTasksResponse)
 
-Empty = _reflection.GeneratedProtocolMessageType('Empty', (_message.Message,), {
-  'DESCRIPTOR' : _EMPTY,
-  '__module__' : 'task_service_pb2'
-  # @@protoc_insertion_point(class_scope:tasks.Empty)
-  })
-_sym_db.RegisterMessage(Empty)
+_TASKSERVICE = DESCRIPTOR.services_by_name['TaskService']
+if _descriptor._USE_C_DESCRIPTORS == False:
 
-
-
-_TASKSERVICE = _descriptor.ServiceDescriptor(
-  name='TaskService',
-  full_name='tasks.TaskService',
-  file=DESCRIPTOR,
-  index=0,
-  serialized_options=None,
-  create_key=_descriptor._internal_create_key,
-  serialized_start=496,
-  serialized_end=780,
-  methods=[
-  _descriptor.MethodDescriptor(
-    name='CreateTask',
-    full_name='tasks.TaskService.CreateTask',
-    index=0,
-    containing_service=None,
-    input_type=_CREATETASKREQUEST,
-    output_type=_TASK,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='UpdateTask',
-    full_name='tasks.TaskService.UpdateTask',
-    index=1,
-    containing_service=None,
-    input_type=_UPDATETASKREQUEST,
-    output_type=_TASK,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='DeleteTask',
-    full_name='tasks.TaskService.DeleteTask',
-    index=2,
-    containing_service=None,
-    input_type=_DELETETASKREQUEST,
-    output_type=_EMPTY,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='GetTask',
-    full_name='tasks.TaskService.GetTask',
-    index=3,
-    containing_service=None,
-    input_type=_GETTASKREQUEST,
-    output_type=_TASK,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-  _descriptor.MethodDescriptor(
-    name='ListTasks',
-    full_name='tasks.TaskService.ListTasks',
-    index=4,
-    containing_service=None,
-    input_type=_LISTTASKSREQUEST,
-    output_type=_LISTTASKSRESPONSE,
-    serialized_options=None,
-    create_key=_descriptor._internal_create_key,
-  ),
-])
-_sym_db.RegisterServiceDescriptor(_TASKSERVICE)
-
-DESCRIPTOR.services_by_name['TaskService'] = _TASKSERVICE
-
+  DESCRIPTOR._options = None
+  _TASK._serialized_start=28
+  _TASK._serialized_end=120
+  _CREATETASKREQUEST._serialized_start=122
+  _CREATETASKREQUEST._serialized_end=196
+  _UPDATETASKREQUEST._serialized_start=198
+  _UPDATETASKREQUEST._serialized_end=303
+  _DELETETASKREQUEST._serialized_start=305
+  _DELETETASKREQUEST._serialized_end=355
+  _GETTASKREQUEST._serialized_start=357
+  _GETTASKREQUEST._serialized_end=385
+  _LISTTASKSREQUEST._serialized_start=387
+  _LISTTASKSREQUEST._serialized_end=437
+  _TASKRESPONSE._serialized_start=439
+  _TASKRESPONSE._serialized_end=495
+  _LISTTASKSRESPONSE._serialized_start=497
+  _LISTTASKSRESPONSE._serialized_end=580
+  _TASKSERVICE._serialized_start=583
+  _TASKSERVICE._serialized_end=888
 # @@protoc_insertion_point(module_scope)

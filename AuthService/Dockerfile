@@ -14,8 +14,8 @@ RUN pip3 install --upgrade "protobuf<=3.20.1"
 # Copy the Protos folder and generated Python files
 COPY ./Protos /AuthService/Protos
 
-# Copy the app.py file
 COPY ./app.py /AuthService
+COPY ./proto_to_dict.py /AuthService
 
 # Expose port 8000
 EXPOSE 8000

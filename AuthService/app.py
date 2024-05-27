@@ -5,12 +5,13 @@ import jwt
 import grpc
 import os
 from werkzeug.security import generate_password_hash, check_password_hash
+from proto_to_dict import proto_to_dict
 
 from Protos.auth_service_pb2 import *
 from Protos.auth_service_pb2_grpc import *
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12345@auth_db/tracker_users'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12345@auth_db/auth_db'
 db = SQLAlchemy(app)
 
 app.app_context().push()
@@ -29,17 +30,16 @@ def generate_token(user):
 
 def check_token(token):
     try:
-        decoded_token = jwt.decode(token, str(app.config['SECRET_KEY']), algorithms='HS256')
+        decoded_token = jwt.decode(token, str(app.config['SECRET_KEY']), algorithms=['HS256'])
         user_id = int(decoded_token['user_id'])
-        user = UserData.query.get(user_id)
-        if user and user.token == token:
-            return user
-        else:
-            return jsonify({'message': 'User does not exist'})
+        # Здесь можно использовать user_id для получения пользователя из базы данных
+        return user_id
     except jwt.ExpiredSignatureError:
-        return None
+        # Обработка исключения, если токен истек
+        return "Expired token. Please log in again."
     except jwt.InvalidTokenError:
-        return jsonify({'message': 'User token is invalid'})
+        # Обработка недействительного токена
+        return "Invalid token. Please log in again."
 
 
 class UserData(db.Model):
@@ -120,84 +120,88 @@ def logout_user():
 @app.route('/create_task', methods=['POST'])
 def create_task():
     token = request.headers.get('Authorization')
-    user = check_token(token)
+    if not token:
+        return jsonify({'message': 'Token not provided'}), 401
+    user_id = check_token(token)
+    print(type(user_id))
     data = request.json
     task_request = CreateTaskRequest(
         title=data['title'],
         description=data['description'],
-        author_id=str(user.id)
+        author_id=user_id
     )
-    print(task_request)
     response = task_client.CreateTask(task_request)
-    print(response.__dict__)
-    return jsonify({'message': 'Task created successfully'})
+    if response.status not in range(200, 300):
+        return jsonify({'message': f'RPC error: {response}'}), response.status
+    return jsonify({'message': f'Task with id {response.task.id} created'}), 200
 
 
-@app.route('/tasks/<task_id>', methods=['PUT'])
+@app.route('/tasks/<int:task_id>', methods=['PUT'])
 def update_task(task_id):
     token = request.headers.get('Authorization')
-    user = check_token(token)
-    if isinstance(user, tuple):
-        return user
-
+    if not token:
+        return jsonify({'message': 'Token not provided'}), 401
+    user_id = check_token(token)
     data = request.json
-    task = Task(id=task_id)
-    if data.get('title'):
-        task.title = data['title']
-    if data.get('description'):
-        task.description = data['description']
-    if data.get('completed') is not None:
-        task.completed = data['completed']
+    upd_request = UpdateTaskRequest(
+        id=task_id,
+        title=data['title'],
+        description=data['description'],
+        author_id=user_id,
+        completed=data['completed']
+    )
 
-    # Check if user is authorized to update this task
-    existing_task = task_client.GetTask(GetTaskRequest(id=task_id))
-    if existing_task.author_id != str(user.id):
-        return jsonify({'message': 'Not authorized to update this task'}), 403
-
-    update_request = UpdateTaskRequest(task=task)
-    response = task_client.UpdateTask(update_request)
-    return jsonify({'message': 'Task updated successfully', 'task': response.__dict__})
+    response = task_client.UpdateTask(upd_request)
+    if response.status not in range(200, 300):
+        return jsonify({'message': f'RPC error: {response}'}), response.status
+    return jsonify({'message': f'Task with id {response.task.id} updated'}), 200
 
 
-@app.route('/tasks/<task_id>', methods=['DELETE'])
+@app.route('/tasks/<int:task_id>', methods=['DELETE'])
 def delete_task(task_id):
     token = request.headers.get('Authorization')
-    user = check_token(token)
-    if isinstance(user, tuple):
-        return user
+    if not token:
+        return jsonify({'message': 'Token not provided'}), 401
+    user_id = check_token(token)
+    del_request = DeleteTaskRequest(
+        id=task_id,
+        author_id=user_id
+    )
+    response = task_client.DeleteTask(del_request)
+    if response.status not in range(200, 300):
+        return jsonify({'message': f'RPC error: {response}'}), response.status
+    return jsonify({'message': f'Task with id {response.task.id} deleted'}), 200
 
-    # Check if user is authorized to delete this task
-    existing_task = task_client.GetTask(GetTaskRequest(id=task_id))
-    if existing_task.author_id != str(user.id):
-        return jsonify({'message': 'Not authorized to delete this task'}), 403
 
-    delete_request = DeleteTaskRequest(id=task_id)
-    response = task_client.DeleteTask(delete_request)
-    return jsonify({'message': 'Task deleted successfully'})
-
-
-@app.route('/tasks/<task_id>', methods=['GET'])  # Use int:task_id for int32
+@app.route('/tasks/<int:task_id>', methods=['GET'])
 def get_task(task_id):
     token = request.headers.get('Authorization')
-    user = check_token(token)
-    if isinstance(user, tuple):
-        return user
-
-    response = task_client.GetTask(GetTaskRequest(id=task_id))
-    return jsonify({'task': response.__dict__})
+    if not token:
+        return jsonify({'message': 'Token not provided'}), 401
+    user_id = check_token(token)
+    get_request = GetTaskRequest(id=task_id)
+    response = task_client.GetTask(get_request)
+    if response.status not in range(200, 300):
+        return jsonify({'message': f'RPC error: {response}'}), response.status
+    return jsonify({'task': proto_to_dict(response.task)}), 200
 
 
 @app.route('/tasks', methods=['GET'])
 def list_tasks():
     token = request.headers.get('Authorization')
-    user = check_token(token)
-    if isinstance(user, tuple):
-        return user
-
-    page = int(request.args.get('page', 1))
-    per_page = int(request.args.get('per_page', 10))
-    tasks = list_tasks(page, per_page)
-    return jsonify([task.__dict__ for task in tasks])
+    if not token:
+        return jsonify({'message': 'Token not provided'}), 401
+    user_id = check_token(token)
+    page = request.args.get('page', 1, type=int)
+    per_page = request.args.get('page_size', 5, type=int)
+    list_request = ListTasksRequest(
+        page=page,
+        per_page=per_page)
+    response = task_client.ListTasks(list_request)
+    if response.status not in range(200, 300):
+        return jsonify({'message': f'RPC error: {response}'}), response.status
+    return jsonify({'count': response.total_count,
+                    'tasks': [proto_to_dict(task) for task in response.tasks]}), 200
 
 
 if __name__ == '__main__':

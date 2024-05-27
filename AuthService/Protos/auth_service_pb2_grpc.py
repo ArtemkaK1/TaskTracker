@@ -15,27 +15,27 @@ class TaskServiceStub(object):
             channel: A grpc.Channel.
         """
         self.CreateTask = channel.unary_unary(
-                '/tasks.TaskService/CreateTask',
+                '/task.TaskService/CreateTask',
                 request_serializer=auth__service__pb2.CreateTaskRequest.SerializeToString,
-                response_deserializer=auth__service__pb2.Task.FromString,
+                response_deserializer=auth__service__pb2.TaskResponse.FromString,
                 )
         self.UpdateTask = channel.unary_unary(
-                '/tasks.TaskService/UpdateTask',
+                '/task.TaskService/UpdateTask',
                 request_serializer=auth__service__pb2.UpdateTaskRequest.SerializeToString,
-                response_deserializer=auth__service__pb2.Task.FromString,
+                response_deserializer=auth__service__pb2.TaskResponse.FromString,
                 )
         self.DeleteTask = channel.unary_unary(
-                '/tasks.TaskService/DeleteTask',
+                '/task.TaskService/DeleteTask',
                 request_serializer=auth__service__pb2.DeleteTaskRequest.SerializeToString,
-                response_deserializer=auth__service__pb2.Empty.FromString,
+                response_deserializer=auth__service__pb2.TaskResponse.FromString,
                 )
         self.GetTask = channel.unary_unary(
-                '/tasks.TaskService/GetTask',
+                '/task.TaskService/GetTask',
                 request_serializer=auth__service__pb2.GetTaskRequest.SerializeToString,
-                response_deserializer=auth__service__pb2.Task.FromString,
+                response_deserializer=auth__service__pb2.TaskResponse.FromString,
                 )
         self.ListTasks = channel.unary_unary(
-                '/tasks.TaskService/ListTasks',
+                '/task.TaskService/ListTasks',
                 request_serializer=auth__service__pb2.ListTasksRequest.SerializeToString,
                 response_deserializer=auth__service__pb2.ListTasksResponse.FromString,
                 )
@@ -80,22 +80,22 @@ def add_TaskServiceServicer_to_server(servicer, server):
             'CreateTask': grpc.unary_unary_rpc_method_handler(
                     servicer.CreateTask,
                     request_deserializer=auth__service__pb2.CreateTaskRequest.FromString,
-                    response_serializer=auth__service__pb2.Task.SerializeToString,
+                    response_serializer=auth__service__pb2.TaskResponse.SerializeToString,
             ),
             'UpdateTask': grpc.unary_unary_rpc_method_handler(
                     servicer.UpdateTask,
                     request_deserializer=auth__service__pb2.UpdateTaskRequest.FromString,
-                    response_serializer=auth__service__pb2.Task.SerializeToString,
+                    response_serializer=auth__service__pb2.TaskResponse.SerializeToString,
             ),
             'DeleteTask': grpc.unary_unary_rpc_method_handler(
                     servicer.DeleteTask,
                     request_deserializer=auth__service__pb2.DeleteTaskRequest.FromString,
-                    response_serializer=auth__service__pb2.Empty.SerializeToString,
+                    response_serializer=auth__service__pb2.TaskResponse.SerializeToString,
             ),
             'GetTask': grpc.unary_unary_rpc_method_handler(
                     servicer.GetTask,
                     request_deserializer=auth__service__pb2.GetTaskRequest.FromString,
-                    response_serializer=auth__service__pb2.Task.SerializeToString,
+                    response_serializer=auth__service__pb2.TaskResponse.SerializeToString,
             ),
             'ListTasks': grpc.unary_unary_rpc_method_handler(
                     servicer.ListTasks,
@@ -104,7 +104,7 @@ def add_TaskServiceServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'tasks.TaskService', rpc_method_handlers)
+            'task.TaskService', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -123,9 +123,9 @@ class TaskService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/tasks.TaskService/CreateTask',
+        return grpc.experimental.unary_unary(request, target, '/task.TaskService/CreateTask',
             auth__service__pb2.CreateTaskRequest.SerializeToString,
-            auth__service__pb2.Task.FromString,
+            auth__service__pb2.TaskResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -140,9 +140,9 @@ class TaskService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/tasks.TaskService/UpdateTask',
+        return grpc.experimental.unary_unary(request, target, '/task.TaskService/UpdateTask',
             auth__service__pb2.UpdateTaskRequest.SerializeToString,
-            auth__service__pb2.Task.FromString,
+            auth__service__pb2.TaskResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -157,9 +157,9 @@ class TaskService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/tasks.TaskService/DeleteTask',
+        return grpc.experimental.unary_unary(request, target, '/task.TaskService/DeleteTask',
             auth__service__pb2.DeleteTaskRequest.SerializeToString,
-            auth__service__pb2.Empty.FromString,
+            auth__service__pb2.TaskResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -174,9 +174,9 @@ class TaskService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/tasks.TaskService/GetTask',
+        return grpc.experimental.unary_unary(request, target, '/task.TaskService/GetTask',
             auth__service__pb2.GetTaskRequest.SerializeToString,
-            auth__service__pb2.Task.FromString,
+            auth__service__pb2.TaskResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -191,7 +191,7 @@ class TaskService(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/tasks.TaskService/ListTasks',
+        return grpc.experimental.unary_unary(request, target, '/task.TaskService/ListTasks',
             auth__service__pb2.ListTasksRequest.SerializeToString,
             auth__service__pb2.ListTasksResponse.FromString,
             options, channel_credentials,

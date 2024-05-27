@@ -6,10 +6,12 @@ services:
     image: postgres:16
     ports:
       - "5433:5432"
+    volumes:
+      - postgres_users_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=12345
-      - POSTGRES_DB=tracker_users
+      - POSTGRES_DB=auth_db
       - POSTGRES_PORT=5432
 
   auth_service:
@@ -21,7 +23,7 @@ services:
     environment:
       - FLASK_APP=app.py
       - FLASK_ENV=development
-      - DATABASE_URL=postgresql://postgres:12345@auth_db/tracker_users
+      - DATABASE_URL=postgresql://postgres:12345@auth_db/auth_db
     volumes:
       - ./AuthService:/app
 
@@ -30,11 +32,13 @@ services:
     image: postgres:16
     ports:
       - "5434:5432"
+    volumes:
+      - postgres_tasks_data:/var/lib/postgresql/data
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=12345
-      - POSTGRES_DB=tasks_data
-      - POSTGRES_PORT=5432
+      - POSTGRES_DB=tasks_db
+      - POSTGRES_PORT=5433
 
   task_service:
     build: ./TaskService
@@ -43,6 +47,12 @@ services:
     depends_on:
       - tasks_db
     environment:
-      - DATABASE_URL=postgresql://postgres:12345@tasks_db/tasks_data
+      - DATABASE_URL=postgresql://postgres:12345@tasks_db/tasks_db
     volumes:
       - ./TaskService:/app
+
+volumes:
+  postgres_users_data:
+    external: true
+  postgres_tasks_data:
+    external: true

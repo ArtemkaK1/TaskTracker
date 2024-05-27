@@ -1,40 +1,28 @@
 from concurrent import futures
 import grpc
-from sqlalchemy import create_engine, Column, Integer, String, Boolean
+from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
-import uuid
 
 from Protos.task_service_pb2_grpc import *
 from Protos.task_service_pb2 import *
 
+from tasks_model import Task, Base
+
 # Database configuration
-DATABASE_URL = "postgresql://postgres:12345@tasks_db/tasks_data"
-
-Base = declarative_base()
-
-
-class Task(Base):
-    __tablename__ = "tasks_data"
-
-    id = Column(String, primary_key=True)
-    title = Column(String)
-    description = Column(String)
-    author_id = Column(String)
-    completed = Column(Boolean)
+DATABASE_URL = "postgresql://postgres:12345@tasks_db/tasks_db"
+engine = create_engine(DATABASE_URL)
 
 
 class TaskService(TaskServiceServicer):
 
     def __init__(self):
-        engine = create_engine(DATABASE_URL)
-        Base.metadata.create_all(engine)
-        Session = sessionmaker(bind=engine)
-        self.session = Session()
+        TaskSession = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+        self.session = TaskSession()
 
     def CreateTask(self, request, context):
+        print(type(request.author_id))
         new_task = Task(
-            id = str(uuid.uuid4()),
             title=request.title,
             description=request.description,
             author_id=request.author_id,
@@ -43,40 +31,43 @@ class TaskService(TaskServiceServicer):
         self.session.add(new_task)
         self.session.commit()
         self.session.refresh(new_task)
-        print(type(new_task.id))
-        return new_task
+        return TaskResponse(status=200, task=new_task.to_proto())
 
     def UpdateTask(self, request, context):
-        task = self.session.query(Task).get(request.task.id)
+        task = self.session.query(Task).get(request.id)
         if not task:
             context.abort(grpc.StatusCode.NOT_FOUND, "Task not found")
-        # Update task attributes based on request
-        for field, value in request.task.__dict__.items():
-            if field != "id":
-                setattr(task, field, value)
+        if task.author_id != request.author_id:
+            context.abort(grpc.StatusCode.UNAUTHENTICATED, 'You cannot edit this task')
+
+        task.title = request.title or task.title
+        task.description = request.description or task.description
+        task.completed = request.completed
         self.session.commit()
-        return task
+        return TaskResponse(status=200, task=task.to_proto())
 
     def DeleteTask(self, request, context):
         task = self.session.query(Task).get(request.id)
         if not task:
             context.abort(grpc.StatusCode.NOT_FOUND, "Task not found")
+        if task.author_id != request.author_id:
+            context.abort(grpc.StatusCode.UNAUTHENTICATED, 'You cannot delete this task')
         self.session.delete(task)
         self.session.commit()
-        return Empty()
+        return TaskResponse(status=200, task=task.to_proto())
 
     def GetTask(self, request, context):
         task = self.session.query(Task).get(request.id)
         if not task:
             context.abort(grpc.StatusCode.NOT_FOUND, "Task not found")
-        return task
+        return TaskResponse(status=200, task=task.to_proto())
 
     def ListTasks(self, request, context):
         query = self.session.query(Task)
-        if request.page and request.per_page:
-            query = query.limit(request.per_page).offset((request.page - 1) * request.per_page)
+        total_count = query.count()
+        query = query.limit(request.per_page).offset((request.page - 1) * request.per_page)
         tasks = query.all()
-        return ListTasksResponse(tasks=tasks)
+        return ListTasksResponse(status=200, tasks=[task.to_proto() for task in tasks], total_count=total_count)
 
 
 def serve():
@@ -88,4 +79,5 @@ def serve():
 
 
 if __name__ == '__main__':
+    Base.metadata.create_all(engine)
     serve()

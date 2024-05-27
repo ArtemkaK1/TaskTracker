@@ -16,6 +16,7 @@ COPY ./Protos /TaskService/Protos
 
 # Copy the tasks_server.py file
 COPY ./tasks_service.py /TaskService
+COPY ./tasks_model.py /TaskService
 
 # Expose port 50051 (default gRPC port)
 EXPOSE 50051
