@@ -4,8 +4,10 @@ from datetime import datetime
 import jwt
 import grpc
 import os
+import json
 from werkzeug.security import generate_password_hash, check_password_hash
 from proto_to_dict import proto_to_dict
+from kafka import KafkaProducer
 
 from Protos.auth_service_pb2 import *
 from Protos.auth_service_pb2_grpc import *
@@ -20,6 +22,16 @@ app.app_context().push()
 channel = grpc.insecure_channel("task_service:50051")
 task_client = TaskServiceStub(channel)
 
+KAFKA_BOOTSTRAP_SERVERS = 'kafka:29092'
+KAFKA_TOPIC_VIEWS = 'task_tracker_views'
+KAFKA_TOPIC_LIKES = 'task_tracker_likes'
+
+producer = KafkaProducer(
+    bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS,
+    value_serializer=lambda v: json.dumps(v).encode('utf-8'),
+    api_version=(2, 0, 2)
+)
+
 
 def generate_token(user):
     token = jwt.encode({'user_id': str(user.id)}, str(app.config['SECRET_KEY']), algorithm='HS256')
@@ -32,13 +44,10 @@ def check_token(token):
     try:
         decoded_token = jwt.decode(token, str(app.config['SECRET_KEY']), algorithms=['HS256'])
         user_id = int(decoded_token['user_id'])
-        # Здесь можно использовать user_id для получения пользователя из базы данных
         return user_id
     except jwt.ExpiredSignatureError:
-        # Обработка исключения, если токен истек
         return "Expired token. Please log in again."
     except jwt.InvalidTokenError:
-        # Обработка недействительного токена
         return "Invalid token. Please log in again."
 
 
@@ -206,6 +215,28 @@ def list_tasks():
         return jsonify({'message': f'RPC error: {response}'}), response.status
     return jsonify({'count': response.total_count,
                     'tasks': [proto_to_dict(task) for task in response.tasks]}), 200
+
+
+@app.route('/task/view/<int:task_id>', methods=['PUT'])
+def view_task(task_id):
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({'message': 'Token not provided'}), 401
+    user_id = check_token(token)
+    data = {'task_id': task_id, 'user_id': user_id}
+    producer.send(KAFKA_TOPIC_VIEWS, data)
+    return jsonify({'View sent to kafka': data}), 200
+
+
+@app.route('/task/like/<int:task_id>', methods=['PUT'])
+def like_task(task_id):
+    token = request.headers.get('Authorization')
+    if not token:
+        return jsonify({'message': 'Token not provided'}), 401
+    user_id = check_token(token)
+    data = {'task_id': task_id, 'user_id': user_id}
+    producer.send(KAFKA_TOPIC_LIKES, data)
+    return jsonify({'Like sent to kafka': data}), 200
 
 
 if __name__ == '__main__':
