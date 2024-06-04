@@ -98,3 +98,80 @@ paths:
       responses:
         '200':
           description: Logout successful
+  /create_task:
+    post:
+      summary: Create a new task
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+      responses:
+        '200':
+          description: Task created successfully
+    /tasks/{task_id}:
+      put:
+        summary: Update an existing task
+        parameters:
+          - in: path
+            name: task_id
+            schema:
+              type: integer
+            required: true
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  completed:
+                    type: boolean
+        responses:
+          '200':
+            description: Task updated successfully
+      delete:
+        summary: Delete a task
+        parameters:
+          - in: path
+            name: task_id
+            schema:
+              type: integer
+            required: true
+        responses:
+          '200':
+            description: Task deleted successfully
+      get:
+        summary: Get a task by ID
+        parameters:
+          - in: path
+            name: task_id
+            schema:
+              type: integer
+            required: true
+        responses:
+          '200':
+            description: Task retrieved successfully
+    /tasks:
+      get:
+        summary: List tasks with pagination
+        parameters:
+          - in: query
+            name: page
+            schema:
+              type: integer
+          - in: query
+            name: per_page
+            schema:
+              type: integer
+        responses:
+          '200':
+            description: Tasks retrieved successfully
