@@ -5,3 +5,4 @@ Werkzeug==3.0.1
 psycopg2==2.9.9
 grpcio==1.51.1
 grpcio-tools==1.51.1
+kafka-python==2.0.2

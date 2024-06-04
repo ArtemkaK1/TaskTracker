@@ -50,6 +50,71 @@ services:
       - DATABASE_URL=postgresql://postgres:12345@tasks_db/tasks_db
     volumes:
       - ./TaskService:/app
+  
+  kafka:
+    container_name: "kafka"
+    image: confluentinc/cp-kafka:7.6.0
+    hostname: kafka
+    restart: unless-stopped
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: 'CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT'
+      KAFKA_ADVERTISED_LISTENERS: 'PLAINTEXT://kafka:29092,PLAINTEXT_HOST://localhost:9092'
+      KAFKA_PROCESS_ROLES: 'broker,controller'
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+      KAFKA_CONTROLLER_QUORUM_VOTERS: '1@kafka:29093'
+      KAFKA_LISTENERS: 'PLAINTEXT://kafka:29092,CONTROLLER://kafka:29093,PLAINTEXT_HOST://0.0.0.0:9092'
+      KAFKA_INTER_BROKER_LISTENER_NAME: 'PLAINTEXT'
+      KAFKA_CONTROLLER_LISTENER_NAMES: 'CONTROLLER'
+      CLUSTER_ID: 'MkU3OEVBNTcwNTJENDM2Qk'
+      KAFKA_JMX_PORT: 9997
+    ports:
+      - "9092:9092"
+  kafka-ui:
+    container_name: "kafka-ui"
+    image: provectuslabs/kafka-ui
+    restart: unless-stopped
+    depends_on:
+      - kafka
+    environment:
+      KAFKA_CLUSTERS_0_NAME: 'local'
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: 'kafka:29092'
+      KAFKA_CLUSTERS_0_METRICS_PORT: 9997
+      DYNAMIC_CONFIG_ENABLED: 'true'
+    ports:
+      - "8081:8080"
+  init-kafka:
+    container_name: "init-kafka"
+    image: confluentinc/cp-kafka:7.6.0
+    depends_on:
+      - kafka
+    entrypoint: [ "/bin/sh", "-c" ]
+    command: |
+      "
+      # blocks until kafka is reachable
+      kafka-topics --bootstrap-server kafka:29092 --list
+
+      echo -e 'Creating kafka topics'
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic task_tracker --replication-factor 1 --partitions 1
+      
+      echo -e 'Successfully created the following topics:'
+      kafka-topics --bootstrap-server kafka:29092 --list
+      "
+
+  stats_service:
+    container_name: stats_service
+    build: ./StatisticsService
+    depends_on:
+      - stats_db
+      - kafka
+
+  stats_db:
+    image: yandex/clickhouse-server:latest
+    expose:
+      - "9000"
+    ports:
+      - "8123:8123"
+
 
 volumes:
   postgres_users_data:
