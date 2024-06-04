@@ -95,38 +95,29 @@ services:
       kafka-topics --bootstrap-server kafka:29092 --list
 
       echo -e 'Creating kafka topics'
-      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic task_tracker_views --replication-factor 1 --partitions 1
-      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic task_tracker_likes --replication-factor 1 --partitions 1
+      kafka-topics --bootstrap-server kafka:29092 --create --if-not-exists --topic task_tracker --replication-factor 1 --partitions 1
       
       echo -e 'Successfully created the following topics:'
       kafka-topics --bootstrap-server kafka:29092 --list
       "
 
-  clickhouse_stats:
-    image: bitnami/clickhouse:latest
-    environment:
-      CLICKHOUSE_DB: default
-      CLICKHOUSE_ADMIN_USER: clickhouse
-      CLICKHOUSE_ADMIN_PASSWORD: clickhouse
+  stats_service:
+    container_name: stats_service
+    build: ./StatisticsService
+    depends_on:
+      - stats_db
+      - kafka
+
+  stats_db:
+    image: yandex/clickhouse-server:latest
+    expose:
+      - "9000"
     ports:
       - "8123:8123"
-      - "9000:9000"
-    volumes:
-      - "clickhouse_stats:/bitnami/clickhouse"
-      - "./StatisticsService/init_db.sql:/docker-entrypoint-initdb.d/init_db.sql"
-    depends_on:
-      - init-kafka
-    healthcheck:
-      test: [ "CMD", "clickhouse-client", "--query", "SELECT 1" ]
-      interval: 10s
-      timeout: 5s
-      retries: 5
 
 
 volumes:
   postgres_users_data:
     external: true
   postgres_tasks_data:
-    external: true
-  clickhouse_stats:
     external: true

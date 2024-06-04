@@ -23,8 +23,7 @@ channel = grpc.insecure_channel("task_service:50051")
 task_client = TaskServiceStub(channel)
 
 KAFKA_BOOTSTRAP_SERVERS = 'kafka:29092'
-KAFKA_TOPIC_VIEWS = 'task_tracker_views'
-KAFKA_TOPIC_LIKES = 'task_tracker_likes'
+KAFKA_TOPIC = 'task_tracker'
 
 producer = KafkaProducer(
     bootstrap_servers=KAFKA_BOOTSTRAP_SERVERS,
@@ -223,8 +222,12 @@ def view_task(task_id):
     if not token:
         return jsonify({'message': 'Token not provided'}), 401
     user_id = check_token(token)
-    data = {'task_id': task_id, 'user_id': user_id}
-    producer.send(KAFKA_TOPIC_VIEWS, data)
+    get_request = GetTaskRequest(id=task_id)
+    response = task_client.GetTask(get_request)
+    if response.status not in range(200, 300):
+        return jsonify({'message': 'Invalid task'}), 400
+    data = {'msg_type': 1, 'task_id': task_id, 'user_id': user_id}
+    producer.send(KAFKA_TOPIC, data)
     return jsonify({'View sent to kafka': data}), 200
 
 
@@ -234,8 +237,12 @@ def like_task(task_id):
     if not token:
         return jsonify({'message': 'Token not provided'}), 401
     user_id = check_token(token)
-    data = {'task_id': task_id, 'user_id': user_id}
-    producer.send(KAFKA_TOPIC_LIKES, data)
+    get_request = GetTaskRequest(id=task_id)
+    response = task_client.GetTask(get_request)
+    if response.status not in range(200, 300):
+        return jsonify({'message': 'Invalid task'}), 400
+    data = {'msg_type': 2, 'task_id': task_id, 'user_id': user_id}
+    producer.send(KAFKA_TOPIC, data)
     return jsonify({'Like sent to kafka': data}), 200
 
 
