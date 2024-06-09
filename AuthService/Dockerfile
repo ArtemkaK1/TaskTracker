@@ -13,6 +13,7 @@ RUN pip3 install --requirement /tmp/requirements.txt
 RUN pip3 install --upgrade "protobuf<=3.20.1"
 # Copy the Protos folder and generated Python files
 COPY ./Protos /AuthService/Protos
+COPY ./StatProto /AuthService/StatProto
 
 COPY ./app.py /AuthService
 COPY ./proto_to_dict.py /AuthService
