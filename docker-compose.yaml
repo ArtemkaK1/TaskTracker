@@ -102,8 +102,9 @@ services:
       "
 
   stats_service:
-    container_name: stats_service
     build: ./StatisticsService
+    ports:
+      - "50052:50052"
     depends_on:
       - stats_db
       - kafka

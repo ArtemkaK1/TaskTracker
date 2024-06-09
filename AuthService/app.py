@@ -11,6 +11,8 @@ from kafka import KafkaProducer
 
 from Protos.auth_service_pb2 import *
 from Protos.auth_service_pb2_grpc import *
+from StatProto.stat_service_pb2 import *
+from StatProto.stat_service_pb2_grpc import *
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:12345@auth_db/auth_db'
@@ -21,6 +23,9 @@ app.app_context().push()
 # Configure gRPC channel
 channel = grpc.insecure_channel("task_service:50051")
 task_client = TaskServiceStub(channel)
+
+statistics_channel = grpc.insecure_channel("stats_service:50052")
+statistics_client = StatisticServiceStub(statistics_channel)
 
 KAFKA_BOOTSTRAP_SERVERS = 'kafka:29092'
 KAFKA_TOPIC = 'task_tracker'
@@ -244,6 +249,35 @@ def like_task(task_id):
     data = {'msg_type': 2, 'task_id': task_id, 'user_id': user_id}
     producer.send(KAFKA_TOPIC, data)
     return jsonify({'Like sent to kafka': data}), 200
+
+
+@app.route('/tasks/<int:task_id>/statistics', methods=['GET'])
+def get_task_statistics(task_id):
+    try:
+        response = statistics_client.GetTaskStatistic(TaskStatRequest(id=task_id))
+        return jsonify({'likes': response.likes, 'views': response.views}), 200
+    except grpc.RpcError as e:
+        return jsonify({'message': f'Error getting task statistics: {e}'}), 500
+
+
+@app.route('/tasks/popular/<sort_type>', methods=['GET'])
+def get_popular_tasks(sort_type):
+    try:
+        response = statistics_client.GetPopularTask(PopularTaskRequest(sort_type=sort_type))
+        tasks = [{'id': task.id, 'author_id': task.author_id, 'count': task.count} for task in response.popular_tasks]
+        return jsonify({'popular_tasks': tasks}), 200
+    except grpc.RpcError as e:
+        return jsonify({'message': f'Error getting popular tasks: {e}'}), 500
+
+
+@app.route('/users/popular', methods=['GET'])
+def get_popular_users():
+    try:
+        response = statistics_client.GetPopularUser(Empty())
+        users = [{'author_id': user.author_id, 'likes': user.likes} for user in response.popular_users]
+        return jsonify({'popular_users': users}), 200
+    except grpc.RpcError as e:
+        return jsonify({'message': f'Error getting popular users: {e}'}), 500
 
 
 if __name__ == '__main__':
